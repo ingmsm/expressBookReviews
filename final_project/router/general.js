@@ -9,10 +9,15 @@ public_users.post("/register", (req,res) => {
     const nombre_usuario=req.body.username
     const clave_usuario=req.body.password
     isValid(nombre_usuario,clave_usuario)
-    
+
+    if (respuesta === true) {
+       return res.send("The user " + users.at(-1).username +  "already exists, try another")
+    }
+    else {
+        return res.send("The user " + users.at(-1).username + " has been added!"); 
+    }
   //console.log(nombre_usuario,clave_usuario)
 
-  return res.send("The user " + users.at(-1).username + " has been added!");
 });
 
 

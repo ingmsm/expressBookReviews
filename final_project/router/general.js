@@ -30,11 +30,16 @@ public_users.get('/author/:author',function (req, res) {
     for (let i= 0; i<autores.length; i++) {
         //console.log(autores[i])
     if (autores[i].author  === author1 ) {
-        booksbyauthor = [...booksbyauthor, autores[i]];
+        elemento= {'isbn':(i+1)}
+        let autor=autores[i];
+        console.log(autor.author)
+        let book_by_autor_final={'isbn':(i+1),'title':autor.title,'reviews':autor.reviews}
+        console.log(book_by_autor_final)
+        booksbyauthor = [...booksbyauthor, book_by_autor_final];
     }
 }
 
-  return res.send(JSON.stringify({booksbyauthor}, null, 3));
+  return res.send(JSON.stringify({booksbyauthor}, null, 4));
 });
 
 // Get all books based on title

@@ -5,7 +5,7 @@ const regd_users = express.Router();
 
 let users = [];
 
-const isValid = (username)=>{ //returns boolean
+const isValid = (username,password)=>{ //returns boolean
  let usuario= username
  let clave= password
  console.log(usuario,users,users.length)
@@ -14,16 +14,19 @@ const isValid = (username)=>{ //returns boolean
  users.push({'username':usuario,'password':clave})
 console.log(users,users[0].username)
 }
-if (users.length !== 0) {
+else {
     for (let i= 0; i<users.length; i++) {
         //console.log(autores[i])
     if (users[i].username  === usuario ){
     let respuesta= Boolean(true)
-    console.log('Usuario Igual')}
+    console.log('Usuario Igual')
+    break;}
+    
     else{
         let respuesta= Boolean(false)
         users.push({'username':usuario,'password':clave})
-    console.log('Usuario Diferente')
+    console.log(users,'Usuario Diferente')
+    break;
     }
 }}
 
@@ -31,6 +34,7 @@ if (users.length !== 0) {
  //
  
 }
+
 const authenticatedUser = (username,password)=>{ //returns boolean
 //write code to check if username and password match the one we have in records.
 }

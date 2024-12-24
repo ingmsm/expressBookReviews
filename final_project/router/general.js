@@ -12,7 +12,7 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  //Write your code here
+ 
   return res.send(JSON.stringify({books}, null, 4));
 });
 
@@ -24,8 +24,17 @@ public_users.get('/isbn/:isbn',function (req, res) {
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const author1 = req.params.author
+    let autores= Object.values(books)
+    let booksbyauthor = [];
+    for (let i= 0; i<autores.length; i++) {
+        //console.log(autores[i])
+    if (autores[i].author  === author1 ) {
+        booksbyauthor = [...booksbyauthor, autores[i]];
+    }
+}
+
+  return res.send(JSON.stringify({booksbyauthor}, null, 3));
 });
 
 // Get all books based on title

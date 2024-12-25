@@ -53,6 +53,26 @@ regd_users.post("/login", (req,res) => {
     if (!username) {
         return res.status(404).json({ message: "Body Empty" });
     }
+    let password = req.body.password;
+    if (!password) {
+        return res.status(404).json({ message: "Body Empty" });
+    }
+    console.log(users)
+    if (users.length===0){ res.send("There are not Users in DB")}
+    else{
+    for (let i= 0; i<users.length; i++) {
+        console.log(users[i])
+    if (users[i].username  === username && users[i].password  === password ){
+     ingreso_valido= Boolean(true)
+    break;}
+    
+    else{
+        ingreso_valido= Boolean(false)
+        }}}
+        
+    if (ingreso_valido ===false){
+        return res.send("Username or Password is incorrect Please Check")
+    }
     // Generate JWT access token
     let accessToken = jwt.sign({
         data: username
@@ -64,7 +84,6 @@ regd_users.post("/login", (req,res) => {
     return res.status(200).send("Customer successfully logged in");
 
 });
-
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here

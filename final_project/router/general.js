@@ -6,7 +6,8 @@ const public_users = express.Router();
 
 
 public_users.post("/register", (req,res) => {
-   
+    const nombre_usuario=req.body.username
+
     if (!nombre_usuario){
         return res.send("The username is not provided, try another")
     }
@@ -27,6 +28,7 @@ public_users.post("/register", (req,res) => {
   //console.log(nombre_usuario,clave_usuario)
 
 });
+
 
 public_users.get('/usuario',function (req, res) {
  

@@ -6,13 +6,13 @@ const public_users = express.Router();
 
 
 public_users.post("/register", (req,res) => {
-        const nombre_usuario=req.body.username
-    if (nombre_usuario === ""){
+   
+    if (!nombre_usuario){
         return res.send("The username is not provided, try another")
     }
     const clave_usuario=req.body.password
 
-    if (clave_usuario === ""){
+    if (!clave_usuario){
         return res.send("The password is not provided, try another")
     }
     const respuesta= isValid(nombre_usuario,clave_usuario)
@@ -27,7 +27,6 @@ public_users.post("/register", (req,res) => {
   //console.log(nombre_usuario,clave_usuario)
 
 });
-
 
 public_users.get('/usuario',function (req, res) {
  

@@ -6,15 +6,23 @@ const public_users = express.Router();
 
 
 public_users.post("/register", (req,res) => {
-    const nombre_usuario=req.body.username
+        const nombre_usuario=req.body.username
+    if (nombre_usuario === ""){
+        return res.send("The username is not provided, try another")
+    }
     const clave_usuario=req.body.password
-    isValid(nombre_usuario,clave_usuario)
+
+    if (clave_usuario === ""){
+        return res.send("The password is not provided, try another")
+    }
+    const respuesta= isValid(nombre_usuario,clave_usuario)
 
     if (respuesta === true) {
-       return res.send("The user " + users.at(-1).username +  "already exists, try another")
+       return res.send("The user " + nombre_usuario +  " already exists, try another")
     }
     else {
-        return res.send("The user " + users.at(-1).username + " has been added!"); 
+        const response_1= {"message":"Customer succesfully registred. Now you can login"}
+        return res.send(response_1); 
     }
   //console.log(nombre_usuario,clave_usuario)
 

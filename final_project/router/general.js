@@ -36,10 +36,20 @@ public_users.get('/usuario',function (req, res) {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
+//Usando la funcion get pero sin promesas 
+//public_users.get('/',function (req, res) {
  
-  return res.send(JSON.stringify({books}, null, 4));
-});
+//  return res.send(JSON.stringify({books}, null, 4));
+//});
+
+
+// Usando la funcion get pero con promesas
+public_users.get('/books',function (req, res) {
+    const get_books = new Promise((resolve, reject) => {
+        resolve(res.send(JSON.stringify({books}, null, 4)));
+      });
+      get_books.then(() => console.log("Promise for Task 10 resolved"));
+  });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {

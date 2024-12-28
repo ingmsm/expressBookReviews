@@ -83,7 +83,7 @@ regd_users.post("/login", (req,res) => {
     }, 'access', { expiresIn: 60 * 60 });
     // Store access token in session
     req.session.authorization = {
-        accessToken
+        accessToken,username
 
         
     }

@@ -96,36 +96,43 @@ regd_users.post("/login", (req,res) => {
 let users_review=[];
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  const username_autenticado = req.body.username
-  const isbn = req.params.isbn
+const isbn = req.params.isbn;
 
-  //Para acceder al usuario
-  if (req.session.authorization) {
-    let token = req.session.authorization['accessToken']; // Access Token
-    
-    // Verify JWT token for user authentication
-    jwt.verify(token, "access", (err, use_autenticado) => {
-        if (!err) {
-            req.user = user; // Set authenticated user data on the request object
-            next(); // Proceed to the next middleware
-        } else {
-            return res.status(403).json({ message: "User not authenticated" }); // Return error if token verification fails
-        }
-    });
-    
-    // Return error if no access token is found in the session
-} else {
-    return res.status(403).json({ message: "User not logged in" });
-}
+  let filtered_book = books[isbn];
 
+  if (filtered_book) {
+    let review = req.query.review;
+    let reviewer = req.session.authorization['username'];
 
+    if (review) {
+      filtered_book['reviews'][reviewer] = review;
+      books[isbn] = filtered_book;
+
+      res.send(
+        `The review for the book with ISBN ${isbn} has been added/updated.`
+      );
+    }
+  } else {
+    res.send("Unable to find this ISBN!");
+  }
 });
+
+
+// Add this route DELETE 
+// Deleting a book review
 
 regd_users.delete("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
-});
-
+    const isbn = req.params.isbn;
+    let reviewer = req.session.authorization['username'];
+    let filtered_review = books[isbn]["reviews"];
+    if (filtered_review[reviewer]){
+        delete filtered_review[reviewer];
+        res.send(`Review for the ISBN ${isbn} posted by the user ${reviewer} deleted.`);
+    }
+    else{
+        res.send("Can't delete, as this review has been posted by a different user");
+    }
+    });
 
 
 module.exports.authenticated = regd_users;

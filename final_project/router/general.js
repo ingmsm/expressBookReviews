@@ -37,10 +37,10 @@ public_users.get('/usuario',function (req, res) {
 
 // Get the book list available in the shop
 //Usando la funcion get pero sin promesas 
-//public_users.get('/',function (req, res) {
+public_users.get('/',function (req, res) {
  
-//  return res.send(JSON.stringify({books}, null, 4));
-//});
+  return res.send(JSON.stringify({books}, null, 4));
+});
 
 
 // Usando la funcion get pero con promesas

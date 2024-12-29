@@ -68,23 +68,17 @@ public_users.get('/author/:author',function (req, res) {
         console.log(autor.author)
         let book_by_autor_final={'isbn':(i+1),'title':autor.title,'reviews':autor.reviews}
         console.log(book_by_autor_final)
-        booksbyauthor = [...booksbyauthor, book_by_autor_final];
-    }
-}
+        booksbyauthor = [...booksbyauthor, book_by_autor_final];}}
 let booksPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
         resolve(booksbyauthor);
-    }, 100)   
-});
+    }, 100)   });
 booksPromise.then((booksbyauthor) => {
     console.log("probando función Promise");
-    res.send(JSON.stringify({booksbyauthor}, null, 4));
-})
+    res.send(JSON.stringify({booksbyauthor}, null, 4));})
 booksPromise.catch((error) => {
     console.log("observando el error")
-    res.status(500).send(error,'Error getting books');
-});
-});
+    res.status(500).send(error,'Error getting books');});});
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   const title1 = req.params.title
@@ -97,23 +91,17 @@ public_users.get('/title/:title',function (req, res) {
         console.log(titulo.author)
         let book_by_title={'isbn':(i+1),'author':titulo.author,'reviews':titulo.reviews}
         console.log(book_by_title)
-        booksbytitle = [...booksbytitle, book_by_title];
-    }
-}
+        booksbytitle = [...booksbytitle, book_by_title];}}
 let booksPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
         resolve(booksbytitle);
-    }, 100)   
-});
+    }, 100)   });
 booksPromise.then((booksbytitle) => {
     console.log("probando función Promise");
-    res.send(JSON.stringify({booksbytitle}, null, 4));
-})
+    res.send(JSON.stringify({booksbytitle}, null, 4));})
 booksPromise.catch((error) => {
     console.log("observando el error")
-    res.status(500).send(error,'Error getting books');
-});
-});
+    res.status(500).send(error,'Error getting books');});});
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   const isbn = req.params.isbn

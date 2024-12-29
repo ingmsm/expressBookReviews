@@ -4,20 +4,16 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
-
 public_users.post("/register", (req,res) => {
     const nombre_usuario=req.body.username
-
     if (!nombre_usuario){
         return res.send("The username is not provided, try another")
     }
     const clave_usuario=req.body.password
-
     if (!clave_usuario){
         return res.send("The password is not provided, try another")
     }
     const respuesta= isValid(nombre_usuario,clave_usuario)
-
     if (respuesta === true) {
        return res.send("The user " + nombre_usuario +  " already exists, try another")
     }
@@ -25,45 +21,47 @@ public_users.post("/register", (req,res) => {
         const response_1= {"message":"Customer succesfully registred. Now you can login"}
         return res.send(response_1); 
     }
-  //console.log(nombre_usuario,clave_usuario)
-
 });
-
 
 public_users.get('/usuario',function (req, res) {
- 
     return res.send(JSON.stringify({users}, null, 2));
 });
-
 // Get the book list available in the shop
-//Usando la funcion get pero sin promesas 
 public_users.get('/',function (req, res) {
- 
-  return res.send(JSON.stringify({books}, null, 4));
-});
-
-
-// Usando la funcion get pero con promesas
-public_users.get('/books',function (req, res) {
-    const get_books = new Promise((resolve, reject) => {
+  const get_books = new Promise((resolve, reject) => {
         resolve(res.send(JSON.stringify({books}, null, 4)));
       });
       get_books.then(() => console.log("Promise for Task 10 resolved"));
   });
-
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   const isbn = req.params.isbn
-  return res.send(books[isbn]);
- });
-  
+  let booksPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(books[isbn]);
+        }, 100)
+    });
+    booksPromise.then((data) => {
+        //Condicional en caso de error
+        if (data!== null){
+        console.log("probando función Promise");
+        res.send(data)}
+        else {
+            console.log("Observando el posible error")
+            res.send(data);
+        }
+    })
+    booksPromise.catch((error) => {
+        console.log("observando el error")
+        res.status(500).send(error,'Error getting books');
+    });
+});
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
   const author1 = req.params.author
     let autores= Object.values(books)
     let booksbyauthor = [];
     for (let i= 0; i<autores.length; i++) {
-        //console.log(autores[i])
     if (autores[i].author  === author1 ) {
         elemento= {'isbn':(i+1)}
         let autor=autores[i];
@@ -73,17 +71,26 @@ public_users.get('/author/:author',function (req, res) {
         booksbyauthor = [...booksbyauthor, book_by_autor_final];
     }
 }
-
-  return res.send(JSON.stringify({booksbyauthor}, null, 4));
+let booksPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve(booksbyauthor);
+    }, 100)   
 });
-
+booksPromise.then((booksbyauthor) => {
+    console.log("probando función Promise");
+    res.send(JSON.stringify({booksbyauthor}, null, 4));
+})
+booksPromise.catch((error) => {
+    console.log("observando el error")
+    res.status(500).send(error,'Error getting books');
+});
+});
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   const title1 = req.params.title
     let titles= Object.values(books)
     let booksbytitle = [];
     for (let i= 0; i<titles.length; i++) {
-        //console.log(autores[i])
     if (titles[i].title  === title1 ) {
         elemento= {'isbn':(i+1)}
         let titulo=titles[i];
@@ -93,10 +100,20 @@ public_users.get('/title/:title',function (req, res) {
         booksbytitle = [...booksbytitle, book_by_title];
     }
 }
-
-  return res.send(JSON.stringify({booksbytitle}, null, 4));
+let booksPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve(booksbytitle);
+    }, 100)   
 });
-
+booksPromise.then((booksbytitle) => {
+    console.log("probando función Promise");
+    res.send(JSON.stringify({booksbytitle}, null, 4));
+})
+booksPromise.catch((error) => {
+    console.log("observando el error")
+    res.status(500).send(error,'Error getting books');
+});
+});
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   const isbn = req.params.isbn
@@ -104,5 +121,4 @@ public_users.get('/review/:isbn',function (req, res) {
     let reviews = review.reviews
   return res.send(reviews);
 });
-
 module.exports.general = public_users;
